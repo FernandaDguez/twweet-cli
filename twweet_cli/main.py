@@ -18,7 +18,7 @@ Press 99 to exit or press 66 to go back to main menu ::
 HASHTAG_MSG = """
 Enter the hashtag or word you may enter multiple words/hashtags separated by a "," : 
 """
-
+TWEET_LENGHT=280
 def _decorator(f):
     f()
     print("DONE \n")
@@ -74,11 +74,17 @@ class TwweetCLI():
                 break
             if option == 'twweet':
                 tweet = input('Enter your twweet\n')
-                if len(tweet) >= 140:
-                    print("Tweet length exceeds the limit of 140 characters!")
+                if len(tweet) >= TWEET_LENGHT:
+                    print(f"Tweet length exceeds the limit of {TWEET_LENGHT} characters!")
                     continue
-                self.twweeter_obj.api.update_status(status=tweet)
-                # Yes, tweet is called 'status' rather confusing
+                elif not tweet:
+                    print("Tweet can't be empty!")
+                    continue
+                try:
+                    # Yes, tweet is called 'status' rather confusing
+                    self.twweeter_obj.api.update_status(status=tweet)
+                except Exception as e:
+                   print("Oops, something went wrong! Try again.")  
             elif option == 'get':
                 check = True
                 while check:
